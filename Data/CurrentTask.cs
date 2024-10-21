@@ -32,6 +32,14 @@ namespace YourTimeApp.Data
             TimeStarted = DateTime.Now;
         }
 
+        public static void StartTimer(TimeSpan timeAlloc)
+        {
+            Timer.Interval = timeAlloc;
+            Timer.Start();
+            TimeStarted = DateTime.Now;
+        }
+
+
         private static void StopTimer(Object source, EventArgs e)
         {
             Timer.Stop();

@@ -59,10 +59,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CreateTasks.xaml.cs">
+      <DependentUpon>CreateTasks.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Data\CurrentTask.cs" />
     <Compile Include="SessionStarted.xaml.cs">
       <DependentUpon>SessionStarted.xaml</DependentUpon>
     </Compile>
+    <Page Include="CreateTasks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

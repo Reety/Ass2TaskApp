@@ -19,5 +19,9 @@ namespace YourTimeApp.Data
             isComplete = false;
         }
 
+        public override string ToString()
+        {
+            return TaskDesc;
+        }
     }
 }
