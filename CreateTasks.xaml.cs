@@ -20,7 +20,6 @@ namespace YourTimeApp
     /// </summary>
     public partial class CreateTasks : Window
     {
-        private SessionBlock seshBlock = new SessionBlock(TimeSpan.FromMinutes(10));
         public CreateTasks()
         {
             InitializeComponent();
@@ -30,8 +29,8 @@ namespace YourTimeApp
         {
             string taskDesc = Task.Text;
             float timeAlloc = float.Parse(Minutes.Text);
-            seshBlock.AddToDo(taskDesc, timeAlloc);
-            TaskDesc.Text = seshBlock.ToDos.First().Key.ToString();
+            ToDo newTodo = new ToDo(taskDesc);
+            TaskDesc.Text = newTodo.ToString();
         }
 
         private void textBox1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
