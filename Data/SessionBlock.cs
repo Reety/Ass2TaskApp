@@ -20,5 +20,10 @@ namespace YourTimeApp.Data
             TimeAlloc = time;
         }
 
+        public void AddToDo(string name)
+        {
+            ToDos.Add(new ToDo(name), TimeSpan.Zero);
+        }
+
     }
 }

@@ -14,6 +14,7 @@ namespace YourTimeApp.Data
         public TimeSpan TimeSpent { get; }
 
         public ToDo(string taskDesc) { 
+            TaskDesc = taskDesc;
             TimeSpent = TimeSpan.Zero;
             isComplete = false;
         }
