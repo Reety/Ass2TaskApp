@@ -25,5 +25,11 @@ namespace YourTimeApp.Data
             ToDos.Add(new ToDo(name), TimeSpan.Zero);
         }
 
+        public void SetCurrentTask(ToDo task)
+        {
+            CurrentTask.Task = task;
+            CurrentTask.StartTimer(1);
+        }
+
     }
 }
