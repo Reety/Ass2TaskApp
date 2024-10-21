@@ -14,5 +14,11 @@ namespace YourTimeApp.Data
         public SessionTimer Timer { get; set; }
         public Dictionary<ToDo, TimeSpan?> ToDos { get; set; } = [];
 
+        public SessionBlock(TimeSpan time)
+        {
+            Timer = new SessionTimer(time);
+            TimeAlloc = time;
+        }
+
     }
 }

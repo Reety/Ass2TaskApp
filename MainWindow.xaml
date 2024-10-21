@@ -16,7 +16,6 @@
                 x:Name="MainButton"
                 Width="100"
                 HorizontalAlignment="Left"
-                Click="MainButton_Click"
                 Cursor="Hand">
                 Click to start timer
             </Button>
