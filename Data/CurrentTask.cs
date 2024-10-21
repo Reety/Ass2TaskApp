@@ -12,11 +12,13 @@ namespace YourTimeApp.Data
         public static ToDo Task { get; set; } = null;
         public static DateTime TimeStarted { get; private set; } 
 
-        public static DateTime TimeElapsed { get; set; }
-
+        public static TimeSpan TimeElapsed => DateTime.Now - TimeStarted;
         public static DispatcherTimer Timer { get; } = new DispatcherTimer();
 
+        public static TimeSpan TimeLeft => Timer.Interval - TimeElapsed;
+
         public delegate void TimerEnder(ToDo task); 
+        public static event TimerEnder TimerEnd;
 
         static CurrentTask()
         {
@@ -33,6 +35,7 @@ namespace YourTimeApp.Data
         private static void StopTimer(Object source, EventArgs e)
         {
             Timer.Stop();
+            TimerEnd?.Invoke(Task);
 
         }
 

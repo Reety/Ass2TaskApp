@@ -21,29 +21,51 @@ namespace YourTimeApp
     /// </summary>
     public partial class SessionStarted : Window
     {
-        private SessionTimer timer;
-        private DispatcherTimer uiTimer;
+        private SessionBlock sesh;
+        private DispatcherTimer uiTimer = new DispatcherTimer();
+        private DispatcherTimer taskTimer = new DispatcherTimer();
         public SessionStarted()
         {
             InitializeComponent();
 
-            timer = new SessionTimer(new TimeSpan(0, 1, 0));
-            uiTimer = new DispatcherTimer();
+            sesh = new SessionBlock(TimeSpan.FromMinutes(2));
             uiTimer.Interval = TimeSpan.FromSeconds(1);
+            taskTimer.Interval = TimeSpan.FromSeconds(1);
             uiTimer.Tick += new EventHandler(OnTimerSecond);
+            taskTimer.Tick += new EventHandler(OnTaskSecond);
         }
 
         private void MainButton_Click(object sender, RoutedEventArgs e)
         {
-            timer.Start();
+            sesh.Timer.Start();
             uiTimer.Start();
         }
 
+        private void StartTaskButton_Click(object sender, RoutedEventArgs eventArgs)
+        {
+            sesh.AddToDo("Test our code");
+            sesh.CurrentTaskFinished += TaskEnded;
+            taskTimer.Start();
+
+        }
         private void OnTimerSecond(object sender, EventArgs e)
         {
-            MainLabel.Content = $"{timer.TimeLeft}";
-            if (!timer.TimerEnabled) uiTimer.Stop();
+            MainLabel.Content = $"{sesh.Timer.TimeLeft}";
+            if (!sesh.Timer.TimerEnabled) uiTimer.Stop();
         }
+
+        private void OnTaskSecond(object sender, EventArgs e)
+        {
+            TaskTimer.Content = $"{CurrentTask.TimeLeft}";
+        }
+
+        private void TaskEnded()
+        {
+            TaskTimer.Content = $"TASK FINISHED";
+            taskTimer.Stop();
+        }
+
+
 
     }
 }

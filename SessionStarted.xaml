@@ -11,14 +11,23 @@
     mc:Ignorable="d">
     <Grid ShowGridLines="True">
         <StackPanel Orientation="Vertical">
-            <Label x:Name="MainLabel">What is your name?</Label>
+            <Label x:Name="MainLabel">Current Time Spent In Session</Label>
             <Button
                 x:Name="MainButton"
                 Width="100"
                 HorizontalAlignment="Left"
                 Click="MainButton_Click"
                 Cursor="Hand">
-                Click to start timer
+                Click to start a session
+            </Button>
+            <Label x:Name="TaskTimer">Current Time Left For Task</Label>
+            <Button
+                x:Name="StartTaskButton"
+                Width="100"
+                HorizontalAlignment="Left"
+                Click="StartTaskButton_Click"
+                Cursor="Hand">
+                Click to start a task
             </Button>
         </StackPanel>
     </Grid>

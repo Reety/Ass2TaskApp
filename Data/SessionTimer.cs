@@ -34,7 +34,7 @@ namespace YourTimeApp.Data
         private void onOneSecond(Object source, EventArgs e) {
             DateTime currTime = DateTime.Now;
             TimeSpan elapsedTime = currTime - startTime;
-            TimeLeft = elapsedTime.ToString("c");
+            TimeLeft = (timeBlock - elapsedTime).ToString("c");
             if (elapsedTime == timeBlock) seshTimer.Stop();
         }
     }
