@@ -23,7 +23,17 @@
                 Text="{Binding TaskDescription}" />
             <uc:EnterTime HorizontalAlignment="Center" />
             <Button x:Name="AddTask" Command="{Binding AddCommand}">Add Task</Button>
-            <ListView x:Name="savedTasks" ItemsSource="{Binding Tasks}" />
+            <ListView x:Name="savedTasks" ItemsSource="{Binding Tasks}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding TaskDescription}" Header="Description" />
+                        <GridViewColumn DisplayMemberBinding="{Binding AllocatedTime}" Header="Time Estimated" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Grid Margin="10">
+                <DataGrid Name="taskGrid" ItemsSource="{Binding Tasks}" />
+            </Grid>
         </StackPanel>
 
     </Grid>

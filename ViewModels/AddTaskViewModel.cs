@@ -58,21 +58,26 @@ namespace YourTimeApp.ViewModels
             }
         }
 
-        public ObservableCollection<UserTask> Tasks { get; set; }
+        public ObservableCollection<TaskViewModel> Tasks { get; set; }
 
         public RelayCommand AddCommand => new RelayCommand(execute => AddTask(),canExecute => !(TaskDescription == null || TaskDescription == string.Empty));
 
         public AddTaskViewModel()
         {
-            Tasks = new ObservableCollection<UserTask>(TaskSessionList.Tasks);
+            Tasks = new ObservableCollection<TaskViewModel>();
         }
 
         private void AddTask()
         {
-            Tasks.Add(new UserTask(TaskDescription)
+            UserTask newTask = new UserTask(TaskDescription)
             {
                 AllocatedTime = new TimeSpan(Hours, Minutes, Seconds)
-            });
+            };
+
+
+            Tasks.Add(new TaskViewModel(newTask));
+
+            Hours = 0; Minutes = 0; Seconds = 0; TaskDescription = string.Empty;
         }
     }
 }
