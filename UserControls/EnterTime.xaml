@@ -23,21 +23,21 @@
         Background="Beige"
         Orientation="Horizontal">
         <TextBox
-            x:Name="Hours"
+            x:Name="Hrs"
             Margin="2.5,0,0,0"
-            Text="HH" />
+            Text="{Binding Path=Hours}" />
         <Label
             VerticalAlignment="Center"
             Content=":"
             FontWeight="Bold" />
-        <TextBox x:Name="Minutes" Text="MM" />
+        <TextBox x:Name="Mins" Text="{Binding Path=Minutes}" />
         <Label
             VerticalAlignment="Center"
             Content=":"
             FontWeight="Bold" />
         <TextBox
-            x:Name="Seconds"
+            x:Name="Secs"
             Margin="0,0,2.5,0"
-            Text="SS" />
+            Text="{Binding Path=Seconds}" />
     </StackPanel>
 </UserControl>

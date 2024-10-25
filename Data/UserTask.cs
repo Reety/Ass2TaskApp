@@ -12,13 +12,11 @@ namespace YourTimeApp.Data
         public string? Description { get; set; }
         public bool isComplete {  get; set; }
 
-        public TimeSpan AllocatedTime { get; set; }
-        public TimeSpan TimeSpent { get; set; }
+        public TimeSpan AllocatedTime { get; set; } = TimeSpan.Zero;
+        public TimeSpan TimeSpent { get; set; } = TimeSpan.Zero;
 
         public UserTask(string taskDesc) { 
             Description = taskDesc;
-            TimeSpent = TimeSpan.Zero;
-            AllocatedTime = TimeSpan.Zero;
             isComplete = false;
         }
 

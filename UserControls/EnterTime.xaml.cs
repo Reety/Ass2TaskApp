@@ -22,9 +22,9 @@ namespace YourTimeApp.UserControls
     /// </summary>
     public partial class EnterTime : UserControl, INotifyPropertyChanged
     {
-        private float hours;
+        private string hours;
 
-        public float Hours
+        public string Hours
         {
             get { return hours; }
             set { hours = value;
@@ -34,8 +34,8 @@ namespace YourTimeApp.UserControls
 
         public float HoursFloat
         {
-            get { return hours; }
-            set { if (float.TryParse(value.ToString(), out float result)) hours = result;
+            get { return float.Parse(hours); }
+            set { if (float.TryParse(value.ToString(), out float result)) HoursFloat = result;
                 else throw new Exception();
                 OnPropertyChanged();
             }

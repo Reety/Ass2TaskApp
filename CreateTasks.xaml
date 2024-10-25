@@ -22,8 +22,8 @@
                 Height="30"
                 Text="{Binding TaskDescription}" />
             <uc:EnterTime HorizontalAlignment="Center" />
-            <Button x:Name="AddTask">Add Task</Button>
-            <ListView x:Name="Tasks" />
+            <Button x:Name="AddTask" Command="{Binding AddCommand}">Add Task</Button>
+            <ListView x:Name="savedTasks" ItemsSource="{Binding Tasks}" />
         </StackPanel>
 
     </Grid>

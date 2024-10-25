@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,42 @@ namespace YourTimeApp.ViewModels
 {
     internal class AddTaskViewModel : ViewModelBase
     {
+        #region Timer Properties
+        private int hours;
+        public int Hours
+        {
+            get => hours;
+            set
+            {
+                hours = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int minutes;
+        public int Minutes
+        {
+            get => minutes;
+            set
+            {
+                minutes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int seconds;
+        public int Seconds
+        {
+            get => seconds;
+            set
+            {
+                seconds = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         private string taskDescription;
 
         public string TaskDescription
@@ -23,7 +60,7 @@ namespace YourTimeApp.ViewModels
 
         public ObservableCollection<UserTask> Tasks { get; set; }
 
-        //public RelayCommand AddCommand => new RelayCommand
+        public RelayCommand AddCommand => new RelayCommand(execute => AddTask(),canExecute => !(TaskDescription == null || TaskDescription == string.Empty));
 
         public AddTaskViewModel()
         {
@@ -32,7 +69,10 @@ namespace YourTimeApp.ViewModels
 
         private void AddTask()
         {
-           
+            Tasks.Add(new UserTask(TaskDescription)
+            {
+                AllocatedTime = new TimeSpan(Hours, Minutes, Seconds)
+            });
         }
     }
 }
