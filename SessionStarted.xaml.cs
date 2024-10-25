@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using YourTimeApp.Data;
+using YourTimeApp.ViewModels;
 
 namespace YourTimeApp
 {
@@ -21,14 +22,15 @@ namespace YourTimeApp
     /// </summary>
     public partial class SessionStarted : Window
     {
-        private SessionBlock sesh;
+        private SessionStartedViewModel vm = new SessionStartedViewModel();
+        private TimeBlock sesh;
         private DispatcherTimer uiTimer = new DispatcherTimer();
         private DispatcherTimer taskTimer = new DispatcherTimer();
         public SessionStarted()
         {
             InitializeComponent();
 
-            sesh = new SessionBlock(TimeSpan.FromMinutes(2));
+            sesh = new TimeBlock();
             uiTimer.Interval = TimeSpan.FromSeconds(1);
             taskTimer.Interval = TimeSpan.FromSeconds(1);
             uiTimer.Tick += new EventHandler(OnTimerSecond);
@@ -50,7 +52,7 @@ namespace YourTimeApp
         }
         private void OnTimerSecond(object sender, EventArgs e)
         {
-            MainLabel.Content = $"{sesh.Timer.TimeLeft}";
+            MainLabel.Content = $"{sesh.Timer.TimeRemaining}";
             if (!sesh.Timer.TimerEnabled) uiTimer.Stop();
         }
 

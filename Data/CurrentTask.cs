@@ -9,7 +9,7 @@ namespace YourTimeApp.Data
 {
     public class CurrentTask
     {
-        public static ToDo Task { get; set; } = null;
+        public static UserTask Task { get; set; } = null;
         public static DateTime TimeStarted { get; private set; } 
 
         public static TimeSpan TimeElapsed => DateTime.Now - TimeStarted;
@@ -17,7 +17,7 @@ namespace YourTimeApp.Data
 
         public static TimeSpan TimeLeft => Timer.Interval - TimeElapsed;
 
-        public delegate void TimerEnder(ToDo task); 
+        public delegate void TimerEnder(UserTask task); 
         public static event TimerEnder TimerEnd;
 
         static CurrentTask()

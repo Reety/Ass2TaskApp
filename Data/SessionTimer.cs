@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,34 +9,59 @@ using System.Windows.Threading;
 
 namespace YourTimeApp.Data
 {
-    public class SessionTimer
+    public class SessionTimer : DispatcherTimer
     {
-        private TimeSpan timeBlock;
+        private TimeSpan TimeAllocated;
         private DateTime startTime;
-        private DispatcherTimer seshTimer;
-
-        public string TimeLeft { get; private set; }
-        public bool TimerEnabled => seshTimer.IsEnabled;
-
-        public SessionTimer(TimeSpan time)
+        private Stopwatch stopWatch = new Stopwatch();
+        private DispatcherTimer seshTimer = new DispatcherTimer()
         {
-            timeBlock = time;
-            seshTimer = new DispatcherTimer();
-            seshTimer.Interval = TimeSpan.FromSeconds(1);
-            seshTimer.Tick += onOneSecond;
+            Interval = TimeSpan.FromSeconds(1),
+        };
+
+        public TimeSpan TimeRemaining { get; private set; }
+
+        public TimeSpan ElapsedTime => TimeAllocated - TimeRemaining;
+        public bool TimerEnabled => stopWatch.IsRunning;
+
+        public SessionTimer(TimeSpan time) : base()
+        {
+            TimeAllocated = time;
+            Interval = TimeSpan.FromSeconds(1);
+
+            Tick += everySecond;
         }
 
-        public void Start()
+        public new void Start()
         {
             startTime = DateTime.Now;
-            seshTimer.Start();
+            base.Start();
+            stopWatch.Start();
         }
 
-        private void onOneSecond(Object source, EventArgs e) {
-            DateTime currTime = DateTime.Now;
-            TimeSpan elapsedTime = currTime - startTime;
-            TimeLeft = (timeBlock - elapsedTime).ToString("c");
-            if (elapsedTime == timeBlock) seshTimer.Stop();
+        public void Pause()
+        {
+            base.Stop();
+            stopWatch.Stop();
+        }
+
+        public void Resume()
+        {
+            if (stopWatch.IsRunning) return;
+
+            base.Start();
+            stopWatch.Start();
+        }
+
+        public new void Stop()
+        {
+            base.Stop();
+            stopWatch.Reset();
+        }
+
+        private void everySecond(Object source, EventArgs e) {
+            TimeRemaining = TimeAllocated - stopWatch.Elapsed;
+            if (stopWatch.Elapsed == TimeAllocated) this.Stop();
         }
     }
 }

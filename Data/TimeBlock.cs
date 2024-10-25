@@ -7,43 +7,41 @@ using System.Timers;
 
 namespace YourTimeApp.Data
 {
-    public class SessionBlock
+    public class TimeBlock
     {
         public int Id { get; set; }
-        public TimeSpan TimeAlloc { get; set; }
+        public TimeSpan TotalTime { get; set; }
         public SessionTimer Timer { get; set; }
-        public Dictionary<ToDo, TimeSpan> ToDos { get; set; } = [];
+        public Dictionary<UserTask, TimeSpan> ToDos { get; set; } = [];
 
         public delegate void OnTaskEnd();
         public event OnTaskEnd CurrentTaskFinished;
 
-        public SessionBlock(TimeSpan time)
+        public TimeBlock()
         {
-            Timer = new SessionTimer(time);
-            TimeAlloc = time;
         }
 
         public void AddToDo(string name)
         {
-            ToDo newTask = new ToDo(name);
+            UserTask newTask = new UserTask(name);
             ToDos.Add(newTask, TimeSpan.Zero);
             SetCurrentTask(newTask);
         }
 
         public void AddToDo(string name, float time)
         {
-            ToDo newTask = new ToDo(name);
+            UserTask newTask = new UserTask(name);
             ToDos.Add(newTask, TimeSpan.FromMinutes(time));
             SetCurrentTask(newTask);
         }
-        public void SetCurrentTask(ToDo task)
+        public void SetCurrentTask(UserTask task)
         {
             CurrentTask.Task = task;
             CurrentTask.StartTimer(ToDos[task]);
             CurrentTask.TimerEnd += NotifyTaskEnd;
         }
 
-        public void NotifyTaskEnd(ToDo task)
+        public void NotifyTaskEnd(UserTask task)
         {
             CurrentTask.TimerEnd -= NotifyTaskEnd;
             CurrentTaskFinished?.Invoke();

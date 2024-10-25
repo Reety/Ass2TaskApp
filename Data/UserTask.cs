@@ -6,25 +6,25 @@ using System.Threading.Tasks;
 
 namespace YourTimeApp.Data
 {
-    public class ToDo
+    public class UserTask
     {
         public int Id { get; set; }
-        public string? TaskDesc { get; set; }
+        public string? Description { get; set; }
         public bool isComplete {  get; set; }
 
-        public TimeSpan TimeEstimated { get; set; }
-        public TimeSpan TimeSpent { get; }
+        public TimeSpan AllocatedTime { get; set; }
+        public TimeSpan TimeSpent { get; set; }
 
-        public ToDo(string taskDesc) { 
-            TaskDesc = taskDesc;
+        public UserTask(string taskDesc) { 
+            Description = taskDesc;
             TimeSpent = TimeSpan.Zero;
-            TimeEstimated = TimeSpan.Zero;
+            AllocatedTime = TimeSpan.Zero;
             isComplete = false;
         }
 
         public override string ToString()
         {
-            return TaskDesc;
+            return Description;
         }
     }
 }

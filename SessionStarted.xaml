@@ -13,13 +13,12 @@
         <StackPanel Orientation="Vertical">
             <Label x:Name="MainLabel">Current Time Spent In Session</Label>
             <Button
-                x:Name="MainButton"
+                x:Name="StartTimer"
                 Width="100"
                 HorizontalAlignment="Left"
-                Click="MainButton_Click"
-                Cursor="Hand">
-                Click to start a session
-            </Button>
+                Command="{Binding StartTimerCommand}"
+                Content="Start Session Timer"
+                Cursor="Hand" />
             <Label x:Name="TaskTimer">Current Time Left For Task</Label>
             <Button
                 x:Name="StartTaskButton"

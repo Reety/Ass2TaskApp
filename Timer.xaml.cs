@@ -10,30 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using YourTimeApp.Data;
-using YourTimeApp.ViewModels;
-using YourTimeApp.UserControls;
 
 namespace YourTimeApp
 {
     /// <summary>
-    /// Interaction logic for CreateTasks.xaml
+    /// Interaction logic for Timer.xaml
     /// </summary>
-    public partial class CreateTask : Window
+    public partial class Timer : UserControl
     {
-
-        public CreateTask()
+        public Timer()
         {
-            this.DataContext = new AddTaskViewModel();
             InitializeComponent();
-        }
-        private void textBox1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                
-            }
         }
     }
 }
