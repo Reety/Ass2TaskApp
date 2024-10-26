@@ -14,38 +14,38 @@ namespace YourTimeApp.ViewModels
     /// </summary>
     internal class UserTaskViewModel : ViewModelBase
     {
-        private UserTask _task;
+        public UserTask Task;
         public string TaskDescription
         {
-            get => _task.Description;
+            get => Task.Description;
             set
             { 
-                _task.Description = value;
+                Task.Description = value;
                 OnPropertyChanged();
             }
         }
         public TimeSpan AllocatedTime
         {
-            get => _task.AllocatedTime;
+            get => Task.AllocatedTime;
             set
             {
-                _task.AllocatedTime = value;
+                Task.AllocatedTime = value;
                 OnPropertyChanged();
             }
         }
         public bool IsComplete
         {
-            get => _task.isComplete;
+            get => Task.isComplete;
             set
             {
-                _task.isComplete = value;
+                Task.isComplete = value;
                 OnPropertyChanged();
             }
         }
 
         public UserTaskViewModel(UserTask task)
         {
-            _task = task;
+            Task = task;
         }
 
         public override string ToString()
