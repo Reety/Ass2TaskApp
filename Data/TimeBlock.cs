@@ -21,11 +21,12 @@ namespace YourTimeApp.Data
         {
         }
 
-        public void AddTask(UserTask task)
+        public bool AddTask(UserTask task)
         {
-            if (TaskExists(task)) return;
+            if (TaskExists(task)) return false;
             TaskTimes.Add((task, TimeSpan.Zero));
             SetCurrentTask(task);
+            return true;
         }
 
         public void SetCurrentTask(UserTask task)

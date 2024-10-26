@@ -15,11 +15,9 @@
                 x:Name="StartSession"
                 Width="50"
                 Command="{Binding StartSeshCommand}"
+                CommandParameter="{Binding SelectedItems, ElementName=savedTasks}"
                 Content="Start Session" />
-            <ListView
-                x:Name="savedTasks"
-                ItemsSource="{Binding Tasks}"
-                SelectedItem="{Binding SelectedItems}">
+            <ListView x:Name="savedTasks" ItemsSource="{Binding AllTasks}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding TaskDescription}" Header="Description" />

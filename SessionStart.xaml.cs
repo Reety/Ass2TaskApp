@@ -23,6 +23,7 @@ namespace YourTimeApp
     public partial class SessionStart : Window
     {
         private SessionStartViewModel vm = new SessionStartViewModel();
+        public IEnumerable<UserTaskViewModel> SelectedItems => (IEnumerable<UserTaskViewModel>)savedTasks.SelectedItems;
         public SessionStart()
         {
             this.DataContext = vm;

@@ -12,7 +12,7 @@ namespace YourTimeApp.ViewModels
     /// <summary>
     /// class that attaches INotifyPropertyChange to UserTask properties so that it's reflected in the GUI
     /// </summary>
-    internal class UserTaskViewModel : ViewModelBase
+    public class UserTaskViewModel : ViewModelBase
     {
         public UserTask Task;
         public string TaskDescription

@@ -13,29 +13,51 @@ namespace YourTimeApp.ViewModels
     internal class SessionStartViewModel : ViewModelBase
     {
         public SessionTimer currentSeshTimer;
-        public ObservableCollection<UserTaskViewModel> Tasks { get; set; }
-        public ObservableCollection<UserTaskViewModel> SelectedItems = [];
+        public TimeBlockViewModel currentTimeBlock;
+
+        private UserTaskViewModel currentTask;
+
+        public UserTaskViewModel CurrentTask
+        {
+            get { return currentTask; }
+            set 
+            {
+                if (currentTimeBlock != null)
+                {
+                    currentTimeBlock.CurrentTask = value;
+                }
+                
+                currentTask = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<UserTaskViewModel> AllTasks { get; set; } = [];
+        //public ObservableCollection<UserTaskViewModel> SelectedItems = [];
         public SessionStartViewModel()
         {
-            TaskSessionList.Tasks.ForEach(t => Tasks.Add(new UserTaskViewModel(t)));
+            TaskSessionList.Tasks.ForEach(t => AllTasks.Add(new UserTaskViewModel(t)));
                   
         }
 
 
 
 		public RelayCommand StartTimeCommand => new RelayCommand(execute => { }, canExecute => { return true; });
-        public RelayCommand StartSeshCommand => new RelayCommand(execute => { }, canExecute => { return true; });
+        public RelayCommand StartSeshCommand => new RelayCommand(execute => StartSession(), canExecute => SelectedItems != null);
 
         private void StartSession()
         {
             TimeBlock currentBlock = new TimeBlock();
+            currentTimeBlock = new TimeBlockViewModel(currentBlock);
+
             currentSeshTimer = new SessionTimer(new TimeSpan(0, 20, 0));
 
             foreach (var task in SelectedItems)
             {
-                currentBlock.AddTask(task.Task);
+                currentTimeBlock.AddTask(task);
             }
         }
+
         private void StartTimer()
 		{
 
