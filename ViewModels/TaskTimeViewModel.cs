@@ -10,12 +10,14 @@ namespace YourTimeApp.ViewModels
     internal class TaskTimeViewModel : ViewModelBase
     {
         public UserTaskViewModel Task;
+
+        private TimeSpan timeSpent;
         public TimeSpan TimeSpent
         {
-            get => TimeSpent; 
+            get => timeSpent; 
             set
             {
-                TimeSpent = value;
+                timeSpent = value;
                 OnPropertyChanged();
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,13 +23,16 @@ namespace YourTimeApp
     /// </summary>
     public partial class SessionStart : Window
     {
-        private SessionStartViewModel vm = new SessionStartViewModel();
-        public IEnumerable<UserTaskViewModel> SelectedItems => (IEnumerable<UserTaskViewModel>)savedTasks.SelectedItems;
+        private SessionStartViewModel vm;
+        private System.Collections.IList selectedItems;
+        public ObservableCollection<object> SelectedItems => (ObservableCollection<object>)selectedItems;
+            
         public SessionStart()
         {
+            vm = new SessionStartViewModel(this);
             this.DataContext = vm;
             InitializeComponent();
-
+            selectedItems = savedTasks.SelectedItems;
         }
 
     }

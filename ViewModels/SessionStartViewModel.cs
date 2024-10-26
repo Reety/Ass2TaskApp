@@ -16,6 +16,7 @@ namespace YourTimeApp.ViewModels
         public TimeBlockViewModel currentTimeBlock;
 
         private UserTaskViewModel currentTask;
+        private SessionStart seshStartView;
 
         public UserTaskViewModel CurrentTask
         {
@@ -34,8 +35,9 @@ namespace YourTimeApp.ViewModels
 
         public ObservableCollection<UserTaskViewModel> AllTasks { get; set; } = [];
         //public ObservableCollection<UserTaskViewModel> SelectedItems = [];
-        public SessionStartViewModel()
+        public SessionStartViewModel(SessionStart seshView)
         {
+            this.seshStartView = seshView;
             TaskSessionList.Tasks.ForEach(t => AllTasks.Add(new UserTaskViewModel(t)));
                   
         }
@@ -43,17 +45,16 @@ namespace YourTimeApp.ViewModels
 
 
 		public RelayCommand StartTimeCommand => new RelayCommand(execute => { }, canExecute => { return true; });
-        public RelayCommand StartSeshCommand => new RelayCommand(execute => StartSession(), canExecute => SelectedItems != null);
+        public RelayCommand StartSeshCommand => new RelayCommand(execute => StartSession(), canExecute => (seshStartView.SelectedItems != null && currentTimeBlock == null));
 
         private void StartSession()
         {
-            TimeBlock currentBlock = new TimeBlock();
-            currentTimeBlock = new TimeBlockViewModel(currentBlock);
+            TimeBlock tbModel = new TimeBlock();
+            currentTimeBlock = new TimeBlockViewModel(tbModel);
 
             currentSeshTimer = new SessionTimer(new TimeSpan(0, 20, 0));
 
-            foreach (var task in SelectedItems)
-            {
+            foreach (UserTaskViewModel task in seshStartView.SelectedItems) {
                 currentTimeBlock.AddTask(task);
             }
         }
