@@ -9,6 +9,9 @@ using System.Windows.Threading;
 
 namespace YourTimeApp.Data
 {
+    /// <summary>
+    ///     Custom timer that inherits from DispatcherTimer and implements pause functionality 
+    /// </summary>
     public class SessionTimer : DispatcherTimer
     {
         private TimeSpan TimeAllocated;

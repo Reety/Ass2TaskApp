@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime;
 using System.Text;
@@ -10,14 +11,11 @@ namespace YourTimeApp.ViewModels
 {
     internal class SessionStartedViewModel : ViewModelBase
     {
-
-        private TimeBlock myBlock;
-
-
-
+        public ObservableCollection<UserTaskViewModel> Tasks { get; set; }
         public SessionStartedViewModel()
         {
-			//myBlock = new SessionBlock(TimeSpan.FromMinutes(1));
+            Tasks = CreateTaskViewModel.Tasks;
+                  
         }
 
 

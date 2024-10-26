@@ -12,7 +12,7 @@ namespace YourTimeApp.Data
         public int Id { get; set; }
         public TimeSpan TotalTime { get; set; }
         public SessionTimer Timer { get; set; }
-        public Dictionary<UserTask, TimeSpan> ToDos { get; set; } = [];
+        public Dictionary<UserTask, TimeSpan> TaskTimes { get; set; } = [];
 
         public delegate void OnTaskEnd();
         public event OnTaskEnd CurrentTaskFinished;
@@ -24,20 +24,20 @@ namespace YourTimeApp.Data
         public void AddToDo(string name)
         {
             UserTask newTask = new UserTask(name);
-            ToDos.Add(newTask, TimeSpan.Zero);
+            TaskTimes.Add(newTask, TimeSpan.Zero);
             SetCurrentTask(newTask);
         }
 
         public void AddToDo(string name, float time)
         {
             UserTask newTask = new UserTask(name);
-            ToDos.Add(newTask, TimeSpan.FromMinutes(time));
+            TaskTimes.Add(newTask, TimeSpan.FromMinutes(time));
             SetCurrentTask(newTask);
         }
         public void SetCurrentTask(UserTask task)
         {
             CurrentTask.Task = task;
-            CurrentTask.StartTimer(ToDos[task]);
+            CurrentTask.StartTimer(TaskTimes[task]);
             CurrentTask.TimerEnd += NotifyTaskEnd;
         }
 

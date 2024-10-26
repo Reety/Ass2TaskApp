@@ -10,7 +10,7 @@ using YourTimeApp.DB;
 
 namespace YourTimeApp.ViewModels
 {
-    internal class AddTaskViewModel : ViewModelBase
+    internal class CreateTaskViewModel : ViewModelBase
     {
         #region Timer Properties
         private int hours;
@@ -58,13 +58,13 @@ namespace YourTimeApp.ViewModels
             }
         }
 
-        public ObservableCollection<TaskViewModel> Tasks { get; set; }
+        public static ObservableCollection<UserTaskViewModel> Tasks { get; set; }
 
         public RelayCommand AddCommand => new RelayCommand(execute => AddTask(),canExecute => !(TaskDescription == null || TaskDescription == string.Empty));
 
-        public AddTaskViewModel()
+        public CreateTaskViewModel()
         {
-            Tasks = new ObservableCollection<TaskViewModel>();
+            Tasks = [];
         }
 
         private void AddTask()
@@ -75,7 +75,7 @@ namespace YourTimeApp.ViewModels
             };
 
 
-            Tasks.Add(new TaskViewModel(newTask));
+            Tasks.Add(new UserTaskViewModel(newTask));
 
             Hours = 0; Minutes = 0; Seconds = 0; TaskDescription = string.Empty;
         }

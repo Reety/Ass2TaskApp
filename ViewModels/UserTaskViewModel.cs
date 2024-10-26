@@ -9,7 +9,10 @@ using YourTimeApp.Data;
 
 namespace YourTimeApp.ViewModels
 {
-    internal class TaskViewModel : ViewModelBase
+    /// <summary>
+    /// class that attaches INotifyPropertyChange to UserTask properties so that it's reflected in the GUI
+    /// </summary>
+    internal class UserTaskViewModel : ViewModelBase
     {
         private UserTask _task;
         public string TaskDescription
@@ -40,7 +43,7 @@ namespace YourTimeApp.ViewModels
             }
         }
 
-        public TaskViewModel(UserTask task)
+        public UserTaskViewModel(UserTask task)
         {
             _task = task;
         }
