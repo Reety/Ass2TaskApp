@@ -84,6 +84,22 @@ namespace YourTimeApp.ViewModels
             else CurrentTimeBlock.Timer.Pause();
         }
 
-        private void StopTimer() { CurrentTimeBlock.Timer.Stop(); }
+        private void StopTimer() { 
+            CurrentTimeBlock.Timer.Stop();
+
+            Window window = new Window
+            {
+                Title = "Current Session",
+                Content = new EndSession()
+                {
+                    DataContext = new EndSessionViewModel(currentTimeBlock)
+                },
+                SizeToContent = SizeToContent.WidthAndHeight,
+                ResizeMode = ResizeMode.NoResize
+            };
+            window.ShowDialog();
+
+
+        }
 	}
 }
