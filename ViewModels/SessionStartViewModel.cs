@@ -13,7 +13,16 @@ namespace YourTimeApp.ViewModels
     internal class SessionStartViewModel : ViewModelBase
     {
         public SessionTimer currentSeshTimer;
-        public TimeBlockViewModel currentTimeBlock;
+
+        private TimeBlockViewModel? currentTimeBlock;
+        public TimeBlockViewModel? CurrentTimeBlock { 
+            get => currentTimeBlock;
+            set
+            {
+                currentTimeBlock = value;
+                OnPropertyChanged();
+            }
+        }
 
         private UserTaskViewModel currentTask;
         private SessionStart seshStartView;
@@ -23,9 +32,9 @@ namespace YourTimeApp.ViewModels
             get { return currentTask; }
             set 
             {
-                if (currentTimeBlock != null)
+                if (CurrentTimeBlock != null)
                 {
-                    currentTimeBlock.CurrentTask = value;
+                    CurrentTimeBlock.CurrentTask = value;
                 }
                 
                 currentTask = value;
@@ -45,17 +54,17 @@ namespace YourTimeApp.ViewModels
 
 
 		public RelayCommand StartTimeCommand => new RelayCommand(execute => { }, canExecute => { return true; });
-        public RelayCommand StartSeshCommand => new RelayCommand(execute => StartSession(), canExecute => (seshStartView.SelectedItems != null && currentTimeBlock == null));
+        public RelayCommand StartSeshCommand => new RelayCommand(execute => StartSession(), canExecute => (seshStartView.SelectedItems != null && CurrentTimeBlock == null));
 
         private void StartSession()
         {
             TimeBlock tbModel = new TimeBlock();
-            currentTimeBlock = new TimeBlockViewModel(tbModel);
+            CurrentTimeBlock = new TimeBlockViewModel(tbModel);
 
             currentSeshTimer = new SessionTimer(new TimeSpan(0, 20, 0));
 
             foreach (UserTaskViewModel task in seshStartView.SelectedItems) {
-                currentTimeBlock.AddTask(task);
+                CurrentTimeBlock.AddTask(task);
             }
         }
 
