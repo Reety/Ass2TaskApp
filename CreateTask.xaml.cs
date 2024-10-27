@@ -25,7 +25,6 @@ namespace YourTimeApp
 
         public CreateTask()
         {
-            this.DataContext = new CreateTaskViewModel();
             InitializeComponent();
         }
         private void textBox1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)

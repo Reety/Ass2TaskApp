@@ -3,26 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.Kernel;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Drawing.Geometries;
 using SkiaSharp;
+using YourTimeApp.Data;
 
 namespace YourTimeApp.ViewModels
 {
     class EndSessionViewModel : ViewModelBase
     {
+
+        YourTimeStore appStore;
         TimeBlockViewModel finishedTimeBlock;
 
-        public ISeries[] Series { get; set; } = [
+        /*public ISeries[] Series { get; set; } = [
         new ColumnSeries<int>(3, 4, 2),
         new ColumnSeries<int>(4, 2, 6),
         new ColumnSeries<double, DiamondGeometry>(4, 3, 4)
-    ];
+    ];*/
+        public PieSeries<TaskTimeViewModel> TaskSeries { get; set; }
 
-        public EndSessionViewModel(TimeBlockViewModel finished)
+
+
+        public EndSessionViewModel(YourTimeStore appStore)
         {
-                finishedTimeBlock = finished;
+            this.appStore = appStore;
+            appStore.TimeBlockFinished += OnTimeBlockFinished;
+        }
+
+        private void OnTimeBlockFinished(TimeBlockViewModel block)
+        {
+            finishedTimeBlock = block;
+            TaskSeries = new PieSeries<TaskTimeViewModel>()
+            {
+                Values = finishedTimeBlock.TaskAndTimes,
+                Mapping = (task, index) => new Coordinate(index, task.TimeSpent.TotalSeconds)
+
+            };
         }
     }
 }

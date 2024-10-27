@@ -23,17 +23,19 @@ namespace YourTimeApp
     /// </summary>
     public partial class SessionStart : Window
     {
-        private SessionStartViewModel vm;
         private System.Collections.IList selectedItems;
         public ObservableCollection<object> SelectedItems => (ObservableCollection<object>)selectedItems;
             
         public SessionStart()
         {
-            vm = new SessionStartViewModel(this);
-            this.DataContext = vm;
             InitializeComponent();
             selectedItems = savedTasks.SelectedItems;
         }
 
+        private void savedTasks_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var vm = (SessionStartViewModel)DataContext;
+            vm.SelectedItems = new ObservableCollection<UserTaskViewModel>(savedTasks.SelectedItems.Cast<UserTaskViewModel>());
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Runtime;
 using System.Text;
@@ -26,21 +27,26 @@ namespace YourTimeApp.ViewModels
         }
 
         private SessionStart seshStartView;
-
+        private YourTimeStore appStore;
 
         public ObservableCollection<UserTaskViewModel> AllTasks { get; set; } = [];
-        //public ObservableCollection<UserTaskViewModel> SelectedItems = [];
-        public SessionStartViewModel(SessionStart seshView)
+        public ObservableCollection<UserTaskViewModel> SelectedItems { get; set; } = [];
+        
+        public SessionStartViewModel(YourTimeStore appStore)
         {
-            this.seshStartView = seshView;
-            AllTasks = CreateTaskViewModel.Tasks;
+            this.appStore = appStore;
+            TaskSessionList.Tasks.ForEach(x =>
+            {
+                if (!AllTasks.Select(t => t.Task).Contains(x)) AllTasks.Add(new UserTaskViewModel(x));
+            });
+            appStore.TaskCreated += OnTaskCreated;
                   
         }
 
 
 
 		public RelayCommand StartTimeCommand => new RelayCommand(execute => { }, canExecute => { return true; });
-        public RelayCommand StartSeshCommand => new RelayCommand(execute => StartSession(), canExecute => (seshStartView.SelectedItems != null && CurrentTimeBlock == null));
+        public RelayCommand StartSeshCommand => new RelayCommand(execute => StartSession(), canExecute => (SelectedItems.Count != 0 && CurrentTimeBlock == null));
 
         public RelayCommand StartTimerCommand => new RelayCommand(execute => StartTimer(), canExecute => ((CurrentTimeBlock != null) && CurrentTimeBlock.CurrentTask != null && !CurrentTimeBlock.Timer.TimerStarted));
         public RelayCommand PauseTimerCommand => new RelayCommand(execute => PauseTimer(), canExecute => ((CurrentTimeBlock != null) && !CurrentTimeBlock.Timer.TimerEnded));
@@ -51,9 +57,11 @@ namespace YourTimeApp.ViewModels
         private void StartSession()
         {
             TimeBlock tbModel = new TimeBlock();
+            appStore.CreateTimeBlock(tbModel);
+
             CurrentTimeBlock = new TimeBlockViewModel(tbModel);
 
-            foreach (UserTaskViewModel task in seshStartView.SelectedItems) {
+            foreach (UserTaskViewModel task in SelectedItems) {
                 CurrentTimeBlock.AddTask(task);
             }
 
@@ -85,14 +93,17 @@ namespace YourTimeApp.ViewModels
         }
 
         private void StopTimer() { 
+
             CurrentTimeBlock.Timer.Stop();
+
+            appStore.EndTimeBlock(currentTimeBlock);
 
             Window window = new Window
             {
                 Title = "Current Session",
                 Content = new EndSession()
                 {
-                    DataContext = new EndSessionViewModel(currentTimeBlock)
+                    DataContext = new EndSessionViewModel(appStore)
                 },
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize
@@ -101,5 +112,16 @@ namespace YourTimeApp.ViewModels
 
 
         }
-	}
+
+        private void OnTaskCreated(UserTask task)
+        {
+            AllTasks.Add(new UserTaskViewModel(task));
+        }
+
+        public override void Dispose()
+        {
+            appStore.TaskCreated -= OnTaskCreated;
+            base.Dispose();
+        }
+    }
 }

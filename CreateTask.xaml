@@ -33,7 +33,7 @@
             </ListView>
             <Button
                 x:Name="CreateSesh"
-                Click="CreateSesh_Click"
+                Command="{Binding CreateSeshCommand}"
                 Content="Create A Session" />
         </StackPanel>
 

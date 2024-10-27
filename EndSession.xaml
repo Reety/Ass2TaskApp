@@ -13,9 +13,9 @@
         <Viewbox MaxWidth="300">
             <TextBlock Text="Session Summary" />
         </Viewbox>
-        <lvc:CartesianChart
+        <lvc:PieChart
             Width="500"
             Height="300"
-            Series="{Binding Series}" />
+            Series="{Binding TaskSeries}" />
     </StackPanel>
 </UserControl>

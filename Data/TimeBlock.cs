@@ -12,7 +12,7 @@ namespace YourTimeApp.Data
         public int Id { get; set; }
         public TimeSpan TotalTime { get; set; }
         public SessionTimer Timer { get; set; }
-        public List<(UserTask task,TimeSpan timeSpent)> TaskTimes { get; set; } = [];
+        public Dictionary<UserTask,TimeSpan> TaskTimes { get; set; } = [];
 
         public delegate void OnTaskEnd();
         public event OnTaskEnd CurrentTaskFinished;
@@ -24,28 +24,15 @@ namespace YourTimeApp.Data
         public bool AddTask(UserTask task)
         {
             if (TaskExists(task)) return false;
-            TaskTimes.Add((task, TimeSpan.Zero));
-            SetCurrentTask(task);
+            TaskTimes[task] = TimeSpan.Zero;
             return true;
         }
 
-        public void SetCurrentTask(UserTask task)
-        {
-            CurrentTask.Task = task;
-            CurrentTask.StartTimer(TaskTimes.Where(t => t.task == task).Select(x => x.timeSpent).First());
-            CurrentTask.TimerEnd += NotifyTaskEnd;
-        }
 
-        public void NotifyTaskEnd(UserTask task)
-        {
-            CurrentTask.TimerEnd -= NotifyTaskEnd;
-            CurrentTaskFinished?.Invoke();
-
-        }
 
         private bool TaskExists(UserTask task)
         {
-            return TaskTimes.Select(t => t.task).Contains(task);
+           return TaskTimes.ContainsKey(task);
         }
 
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiveChartsCore.Kernel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -79,6 +80,7 @@ namespace YourTimeApp.ViewModels
 
             if (currentTask == null) return;
             currentTask.TimeSpent += TimeSpan.FromSeconds(1);
+            TimeBlock.TaskTimes[currentTask.Task.Task] += TimeSpan.FromSeconds(1);
         }
     }
 }

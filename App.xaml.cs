@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.Configuration;
 using YourTimeApp.DB;
+using YourTimeApp.ViewModels;
+using YourTimeApp.Data;
 
 namespace YourTimeApp
 {   
@@ -16,6 +18,8 @@ namespace YourTimeApp
     public partial class App : Application
     {
         public static IConfiguration Config { get; private set; }
+
+        private CreateTaskViewModel createTaskVM;
 
         public App()
         {
@@ -34,9 +38,24 @@ namespace YourTimeApp
                 AllocatedTime = new TimeSpan(1, 20, 0)
             });
 
+            YourTimeStore appStore = new YourTimeStore();
+            createTaskVM = new CreateTaskViewModel(appStore);
+
+
+
             Config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            CreateTask createTaskWindow = new CreateTask()
+            {
+                DataContext = createTaskVM
+            };
+
+            createTaskWindow.Show();
         }
     }
 }
