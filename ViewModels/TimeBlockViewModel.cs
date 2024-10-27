@@ -76,6 +76,9 @@ namespace YourTimeApp.ViewModels
         {
             if (Timer == null) return;
             TimeRemaining = Timer.TimeRemaining;
+
+            if (currentTask == null) return;
+            currentTask.TimeSpent += TimeSpan.FromSeconds(1);
         }
     }
 }
