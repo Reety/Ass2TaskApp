@@ -5,14 +5,15 @@ using System.Linq;
 using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using YourTimeApp.Data;
 using YourTimeApp.DB;
 
+
 namespace YourTimeApp.ViewModels
 {
-    internal class SessionStartViewModel : ViewModelBase
+    public class SessionStartViewModel : ViewModelBase
     {
-        public SessionTimer currentSeshTimer;
 
         private TimeBlockViewModel? currentTimeBlock;
         public TimeBlockViewModel? CurrentTimeBlock { 
@@ -24,23 +25,8 @@ namespace YourTimeApp.ViewModels
             }
         }
 
-        private UserTaskViewModel currentTask;
         private SessionStart seshStartView;
 
-        public UserTaskViewModel CurrentTask
-        {
-            get { return currentTask; }
-            set 
-            {
-                if (CurrentTimeBlock != null)
-                {
-                    CurrentTimeBlock.CurrentTask = value;
-                }
-                
-                currentTask = value;
-                OnPropertyChanged();
-            }
-        }
 
         public ObservableCollection<UserTaskViewModel> AllTasks { get; set; } = [];
         //public ObservableCollection<UserTaskViewModel> SelectedItems = [];
@@ -56,21 +42,36 @@ namespace YourTimeApp.ViewModels
 		public RelayCommand StartTimeCommand => new RelayCommand(execute => { }, canExecute => { return true; });
         public RelayCommand StartSeshCommand => new RelayCommand(execute => StartSession(), canExecute => (seshStartView.SelectedItems != null && CurrentTimeBlock == null));
 
+        public RelayCommand StartTimerCommand => new RelayCommand(execute => StartTimer(), canExecute => ((CurrentTimeBlock != null) && CurrentTimeBlock.CurrentTask != null));
+        public RelayCommand ChangeCurrentTaskCommand => new RelayCommand(execute => ChangeCurrentTask((TaskTimeViewModel)execute),canExecute => ((CurrentTimeBlock != null) && CurrentTimeBlock.CurrentTask != canExecute));
         private void StartSession()
         {
             TimeBlock tbModel = new TimeBlock();
             CurrentTimeBlock = new TimeBlockViewModel(tbModel);
 
-            currentSeshTimer = new SessionTimer(new TimeSpan(0, 20, 0));
-
             foreach (UserTaskViewModel task in seshStartView.SelectedItems) {
                 CurrentTimeBlock.AddTask(task);
             }
+
+            CurrentSession session = new CurrentSession(this);
+            Window window = new Window
+            {
+                Title = "Current Session",
+                Content = session,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                ResizeMode = ResizeMode.NoResize
+            };
+            window.ShowDialog();
+        }
+
+        private void ChangeCurrentTask(TaskTimeViewModel currentTask)
+        {
+            CurrentTimeBlock.CurrentTask = currentTask;
         }
 
         private void StartTimer()
 		{
-
+            CurrentTimeBlock.Timer.Start();
 		}
 	}
 }

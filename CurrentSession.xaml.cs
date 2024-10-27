@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using YourTimeApp.ViewModels;
 
 namespace YourTimeApp
 {
@@ -20,9 +21,16 @@ namespace YourTimeApp
     /// </summary>
     public partial class CurrentSession : UserControl
     {
-        public CurrentSession()
+        public CurrentSession(SessionStartViewModel vm)
         {
+            this.DataContext = vm;
             InitializeComponent();
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            RadioButton checkedButton = (RadioButton)sender;
+
         }
     }
 }

@@ -54,7 +54,11 @@
                 <DataGridTemplateColumn Width="0.2*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <RadioButton Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=DataContext.CurrentTimeBlock.ChangeCurrentTaskCommand}" CommandParameter="{Binding}" />
+                            <RadioButton
+                                Checked="RadioButton_Checked"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=DataContext.ChangeCurrentTaskCommand}"
+                                CommandParameter="{Binding}"
+                                GroupName="CurrentTaskRadio" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

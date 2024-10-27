@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace YourTimeApp.ViewModels
 {
-    internal class RelayCommand : ICommand
+    public class RelayCommand : ICommand
     {
         private Action<object> execute;
         private Func<object,bool> canExecute;

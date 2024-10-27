@@ -7,9 +7,9 @@ using YourTimeApp.Data;
 
 namespace YourTimeApp.ViewModels
 {
-    internal class TaskTimeViewModel : ViewModelBase
+    public class TaskTimeViewModel : ViewModelBase
     {
-        public UserTaskViewModel Task;
+        public UserTaskViewModel Task {  get; set; }
 
         private TimeSpan timeSpent;
         public TimeSpan TimeSpent
