@@ -35,5 +35,10 @@ namespace YourTimeApp
                 
             }
         }
+
+        private void CreateSesh_Click(object sender, RoutedEventArgs e)
+        {
+            new SessionStart().Show();
+        }
     }
 }

@@ -15,17 +15,15 @@ namespace YourTimeApp.Data
     public class SessionTimer : DispatcherTimer
     {
         private TimeSpan TimeAllocated;
-        private DateTime startTime;
         private Stopwatch stopWatch = new Stopwatch();
-        private DispatcherTimer seshTimer = new DispatcherTimer()
-        {
-            Interval = TimeSpan.FromSeconds(1),
-        };
 
         public TimeSpan TimeRemaining { get; private set; }
 
         public TimeSpan ElapsedTime => TimeAllocated - TimeRemaining;
-        public bool TimerEnabled => stopWatch.IsRunning;
+
+        public bool TimerEnded { get; private set; } = false;
+        public bool TimerStarted { get; private set; } = false;
+        public bool Paused => !stopWatch.IsRunning;
 
         public SessionTimer(TimeSpan time) : base()
         {
@@ -37,9 +35,9 @@ namespace YourTimeApp.Data
 
         public new void Start()
         {
-            startTime = DateTime.Now;
             base.Start();
             stopWatch.Start();
+            TimerStarted = true;
         }
 
         public void Pause()
@@ -60,6 +58,7 @@ namespace YourTimeApp.Data
         {
             base.Stop();
             stopWatch.Reset();
+            TimerEnded = true;
         }
 
         private void everySecond(Object source, EventArgs e) {

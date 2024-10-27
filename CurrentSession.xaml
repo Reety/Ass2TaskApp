@@ -10,13 +10,16 @@
     mc:Ignorable="d">
     <StackPanel Background="AntiqueWhite">
         <Viewbox MaxWidth="300">
-            <Label
+            <TextBlock
                 x:Name="Timer"
                 HorizontalAlignment="Center"
-                Content="00:00:00"
-                FontStretch="Expanded" />
+                FontStretch="Expanded"
+                Text="{Binding CurrentTimeBlock.TimeRemaining, StringFormat=hh\\:mm\\:ss}" />
         </Viewbox>
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+        <StackPanel
+            Margin="0,25,0,0"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
             <StackPanel.Resources>
                 <Style TargetType="Button">
                     <Setter Property="MinWidth" Value="60" />
@@ -27,12 +30,17 @@
                 </Style>
             </StackPanel.Resources>
             <Button
+                x:Name="StartTimer"
+                Command="{Binding StartTimerCommand}"
+                Content="Start" />
+            <Button
                 x:Name="PauseTimer"
-                Command="{Binding PauseCommand}"
+                Click="PauseTimer_Click"
+                Command="{Binding PauseTimerCommand}"
                 Content="Pause" />
             <Button
                 x:Name="StopTimer"
-                Command="{Binding StopCommand}"
+                Command="{Binding StopTimerCommand}"
                 Content="Stop" />
         </StackPanel>
         <DataGrid

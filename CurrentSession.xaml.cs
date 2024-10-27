@@ -32,5 +32,11 @@ namespace YourTimeApp
             RadioButton checkedButton = (RadioButton)sender;
 
         }
+
+        private void PauseTimer_Click(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            clickedButton.Content = ((string)clickedButton.Content == "Pause") ? "Resume" : "Pause";
+        }
     }
 }

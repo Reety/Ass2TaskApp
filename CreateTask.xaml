@@ -31,10 +31,13 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Grid Margin="10">
-                <DataGrid Name="taskGrid" ItemsSource="{Binding Tasks}" />
-            </Grid>
+            <Button
+                x:Name="CreateSesh"
+                Click="CreateSesh_Click"
+                Content="Create A Session" />
         </StackPanel>
+
+
 
     </Grid>
 </Window>

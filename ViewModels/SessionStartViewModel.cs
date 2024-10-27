@@ -33,7 +33,7 @@ namespace YourTimeApp.ViewModels
         public SessionStartViewModel(SessionStart seshView)
         {
             this.seshStartView = seshView;
-            TaskSessionList.Tasks.ForEach(t => AllTasks.Add(new UserTaskViewModel(t)));
+            AllTasks = CreateTaskViewModel.Tasks;
                   
         }
 
@@ -42,7 +42,11 @@ namespace YourTimeApp.ViewModels
 		public RelayCommand StartTimeCommand => new RelayCommand(execute => { }, canExecute => { return true; });
         public RelayCommand StartSeshCommand => new RelayCommand(execute => StartSession(), canExecute => (seshStartView.SelectedItems != null && CurrentTimeBlock == null));
 
-        public RelayCommand StartTimerCommand => new RelayCommand(execute => StartTimer(), canExecute => ((CurrentTimeBlock != null) && CurrentTimeBlock.CurrentTask != null));
+        public RelayCommand StartTimerCommand => new RelayCommand(execute => StartTimer(), canExecute => ((CurrentTimeBlock != null) && CurrentTimeBlock.CurrentTask != null && !CurrentTimeBlock.Timer.TimerStarted));
+        public RelayCommand PauseTimerCommand => new RelayCommand(execute => PauseTimer(), canExecute => ((CurrentTimeBlock != null) && !CurrentTimeBlock.Timer.TimerEnded));
+
+        public RelayCommand StopTimerCommand => new RelayCommand(execute => StopTimer(), canExecute => ((CurrentTimeBlock != null)));
+
         public RelayCommand ChangeCurrentTaskCommand => new RelayCommand(execute => ChangeCurrentTask((TaskTimeViewModel)execute),canExecute => ((CurrentTimeBlock != null) && CurrentTimeBlock.CurrentTask != canExecute));
         private void StartSession()
         {
@@ -73,5 +77,13 @@ namespace YourTimeApp.ViewModels
 		{
             CurrentTimeBlock.Timer.Start();
 		}
+
+        private void PauseTimer() { 
+
+            if (CurrentTimeBlock.Timer.Paused) CurrentTimeBlock.Timer.Resume();
+            else CurrentTimeBlock.Timer.Pause();
+        }
+
+        private void StopTimer() { CurrentTimeBlock.Timer.Stop(); }
 	}
 }

@@ -58,13 +58,13 @@ namespace YourTimeApp.ViewModels
             }
         }
 
-        public static ObservableCollection<UserTaskViewModel> Tasks { get; set; }
+        public static ObservableCollection<UserTaskViewModel> Tasks { get; set; } = [];
 
         public RelayCommand AddCommand => new RelayCommand(execute => AddTask(),canExecute => !(TaskDescription == null || TaskDescription == string.Empty));
 
         public CreateTaskViewModel()
         {
-            Tasks = [];
+            TaskSessionList.Tasks.ForEach(t => Tasks.Add(new UserTaskViewModel(t)));
         }
 
         private void AddTask()
