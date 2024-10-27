@@ -15,7 +15,20 @@ namespace YourTimeApp.ViewModels
 
         public ObservableCollection<TaskTimeViewModel> TaskAndTimes = [];
 
-        public UserTaskViewModel CurrentTask;
+        private UserTaskViewModel currentTask;
+
+        public UserTaskViewModel CurrentTask
+        { get => currentTask;
+            set
+            {
+                if (currentTask ==  value) return;
+                foreach (TaskTimeViewModel tt in TaskAndTimes)
+                {
+                    if (tt.Task == currentTask) tt.IsCurrentTask = true;
+                    else tt.IsCurrentTask = false;
+                }
+            }
+        }
         public TaskTimeViewModel CurrentTaskTime => TaskAndTimes.FirstOrDefault(t => t.Task == CurrentTask);
 
         public TimeBlockViewModel(TimeBlock timeBlock)

@@ -21,6 +21,15 @@ namespace YourTimeApp.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        private bool isCurrentTask = false;
+
+        public bool IsCurrentTask
+        {
+            get => isCurrentTask;
+            set { isCurrentTask = value; OnPropertyChanged(); }
+        }
+
         public TaskTimeViewModel(UserTaskViewModel task, TimeSpan time)
         {
             Task = task;
