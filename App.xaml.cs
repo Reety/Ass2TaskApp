@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using YourTimeApp.DB;
 using YourTimeApp.ViewModels;
 using YourTimeApp.Data;
+using LiveChartsCore;
 
 namespace YourTimeApp
 {   
@@ -37,6 +38,10 @@ namespace YourTimeApp
             {
                 AllocatedTime = new TimeSpan(1, 20, 0)
             });
+
+            LiveCharts.Configure(config =>
+                config.HasMap<TaskTimeViewModel>(
+                    (task, index) => new(index, task.TimeSpent.TotalSeconds)));
 
             YourTimeStore appStore = new YourTimeStore();
             createTaskVM = new CreateTaskViewModel(appStore);

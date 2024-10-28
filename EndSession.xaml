@@ -13,9 +13,6 @@
         <Viewbox MaxWidth="300">
             <TextBlock Text="Session Summary" />
         </Viewbox>
-        <lvc:PieChart
-            Width="500"
-            Height="300"
-            Series="{Binding TaskSeries}" />
+        <lvc:PieChart Height="500" Series="{Binding Series}" />
     </StackPanel>
 </UserControl>

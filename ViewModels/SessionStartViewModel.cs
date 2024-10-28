@@ -26,8 +26,8 @@ namespace YourTimeApp.ViewModels
             }
         }
 
-        private SessionStart seshStartView;
         private YourTimeStore appStore;
+        private EndSessionViewModel endSessionView;
 
         public ObservableCollection<UserTaskViewModel> AllTasks { get; set; } = [];
         public ObservableCollection<UserTaskViewModel> SelectedItems { get; set; } = [];
@@ -40,6 +40,7 @@ namespace YourTimeApp.ViewModels
                 if (!AllTasks.Select(t => t.Task).Contains(x)) AllTasks.Add(new UserTaskViewModel(x));
             });
             appStore.TaskCreated += OnTaskCreated;
+            endSessionView = new EndSessionViewModel(appStore);
                   
         }
 
@@ -103,7 +104,7 @@ namespace YourTimeApp.ViewModels
                 Title = "Current Session",
                 Content = new EndSession()
                 {
-                    DataContext = new EndSessionViewModel(appStore)
+                    DataContext = endSessionView
                 },
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Windows.Navigation;
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
@@ -25,6 +26,8 @@ namespace YourTimeApp.ViewModels
         new ColumnSeries<int>(4, 2, 6),
         new ColumnSeries<double, DiamondGeometry>(4, 3, 4)
     ];*/
+
+        public ISeries[] Series { get; set; }
         public PieSeries<TaskTimeViewModel> TaskSeries { get; set; }
 
 
@@ -38,12 +41,32 @@ namespace YourTimeApp.ViewModels
         private void OnTimeBlockFinished(TimeBlockViewModel block)
         {
             finishedTimeBlock = block;
-            TaskSeries = new PieSeries<TaskTimeViewModel>()
-            {
-                Values = finishedTimeBlock.TaskAndTimes,
-                Mapping = (task, index) => new Coordinate(index, task.TimeSpent.TotalSeconds)
+            Series = new PieSeries<TaskTimeViewModel>[finishedTimeBlock.TaskAndTimes.Count];
 
-            };
+            fillChart(finishedTimeBlock.TaskAndTimes);
+
+        }
+
+        private void fillChart(IEnumerable<TaskTimeViewModel> taskAndTimes)
+        {
+            int i = 0;
+
+            foreach (var item in taskAndTimes)
+            {
+                Series[i] = new PieSeries<TaskTimeViewModel>(item)
+                {
+                    Name = item.Task.TaskDescription,
+                    ToolTipLabelFormatter = point =>
+                    {
+                        var pv = point.Coordinate.PrimaryValue;
+                        var sv = point.StackedValue;
+                        return (pv / sv.Total).ToString("P1");
+                    },
+
+                };
+                i++;
+            }
+
         }
     }
 }
