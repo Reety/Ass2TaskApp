@@ -21,9 +21,8 @@ namespace YourTimeApp
     /// </summary>
     public partial class CurrentSession : UserControl
     {
-        public CurrentSession(SessionStartViewModel vm)
+        public CurrentSession()
         {
-            this.DataContext = vm;
             InitializeComponent();
         }
 

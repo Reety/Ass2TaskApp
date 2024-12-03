@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using YourTimeApp.Data;
@@ -43,10 +44,12 @@ namespace YourTimeApp.ViewModels
             }
         }
 
+        public event Action TimerEnded;
+
         public TimeBlockViewModel(TimeBlock timeBlock)
         {
             TimeBlock = timeBlock;
-            Timer = new SessionTimer(TimeSpan.FromMinutes(10));
+            Timer = new SessionTimer(timeBlock.AllocatedTime);
             TimeRemaining = Timer.TimeRemaining;
             Timer.Tick += updateTimeRemaining;
         }
@@ -70,14 +73,19 @@ namespace YourTimeApp.ViewModels
 
         public void EndBlock()
         {
+            TimeBlock.TotalTimeSpent = Timer.ElapsedTime;
 
+            Timer.Stop();
         }
 
         private void updateTimeRemaining(Object source, EventArgs e)
         {
             if (Timer == null) return;
             TimeRemaining = Timer.TimeRemaining;
-
+            if (Timer.TimerEnded)
+            {
+                TimerEnded?.Invoke();
+            }
             if (currentTask == null) return;
             currentTask.TimeSpent += TimeSpan.FromSeconds(1);
             TimeBlock.TaskTimes[currentTask.Task.Task] += TimeSpan.FromSeconds(1);

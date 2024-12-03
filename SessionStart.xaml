@@ -5,29 +5,65 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:YourTimeApp"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="SessionStart"
+    xmlns:uc="clr-namespace:YourTimeApp.UserControls"
+    x:Name="SessionStartWindow"
+    Title="Create A Session"
     Width="800"
     Height="450"
+    Background="AntiqueWhite"
     mc:Ignorable="d">
     <Grid ShowGridLines="True">
         <StackPanel Orientation="Vertical">
-            <Button
-                x:Name="StartSession"
-                Width="50"
-                Command="{Binding StartSeshCommand}"
-                CommandParameter="{Binding SelectedItems, ElementName=savedTasks}"
-                Content="Start Session" />
+            <TextBlock
+                Margin="0,10"
+                HorizontalAlignment="Center"
+                FontWeight="Bold"
+                Text="What tasks do you want to work on?" />
             <ListView
                 x:Name="savedTasks"
+                MaxWidth="600"
                 ItemsSource="{Binding AllTasks}"
                 SelectionChanged="savedTasks_SelectionChanged">
+                <ListView.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                    </Style>
+                </ListView.Resources>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding TaskDescription}" Header="Description" />
-                        <GridViewColumn DisplayMemberBinding="{Binding AllocatedTime}" Header="Time Estimated" />
+                        <GridViewColumn
+                            Width="500"
+                            DisplayMemberBinding="{Binding TaskDescription}"
+                            Header="Description" />
+                        <GridViewColumn
+                            Width="Auto"
+                            DisplayMemberBinding="{Binding AllocatedTime}"
+                            Header="Time Estimated" />
                     </GridView>
                 </ListView.View>
             </ListView>
+            <TextBlock
+                Margin="0,20,0,0"
+                HorizontalAlignment="Center"
+                FontWeight="Bold"
+                Text="For how long?" />
+            <uc:EnterTime Margin="0,10,0,10" HorizontalAlignment="Center" />
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button
+                    x:Name="BackTasks"
+                    Width="100"
+                    Margin="10"
+                    Command="{Binding GoBackTasks}"
+                    CommandParameter="{Binding ElementName=SessionStartWindow}"
+                    Content="Add More Tasks" />
+                <Button
+                    x:Name="StartSession"
+                    Width="100"
+                    Margin="10"
+                    Command="{Binding StartSeshCommand}"
+                    CommandParameter="{Binding SelectedItems, ElementName=savedTasks}"
+                    Content="Start Session" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 

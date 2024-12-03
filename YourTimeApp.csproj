@@ -41,4 +41,12 @@
 	    <DependentUpon>Settings.settings</DependentUpon>
 	  </Compile>
 	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="CreateTask.xaml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Page>
+	  <Page Update="SessionStart.xaml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Page>
+	</ItemGroup>
 </Project>

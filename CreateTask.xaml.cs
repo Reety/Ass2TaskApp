@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using YourTimeApp.Data;
 using YourTimeApp.ViewModels;
-using YourTimeApp.UserControls;
 
 namespace YourTimeApp
 {
@@ -26,13 +25,6 @@ namespace YourTimeApp
         public CreateTask()
         {
             InitializeComponent();
-        }
-        private void textBox1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                
-            }
         }
 
         private void CreateSesh_Click(object sender, RoutedEventArgs e)

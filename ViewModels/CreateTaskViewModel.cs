@@ -35,17 +35,6 @@ namespace YourTimeApp.ViewModels
             }
         }
 
-        private int seconds;
-        public int Seconds
-        {
-            get => seconds;
-            set
-            {
-                seconds = value;
-                OnPropertyChanged();
-            }
-        }
-
         #endregion
 
         private string taskDescription;
@@ -58,12 +47,31 @@ namespace YourTimeApp.ViewModels
             }
         }
 
-        public static ObservableCollection<UserTaskViewModel> Tasks { get; set; } = [];
+        private UserTaskViewModel selectedItem;
+
+        public UserTaskViewModel SelectedItem
+        {
+            get { return selectedItem; }
+            set { selectedItem = value; OnPropertyChanged(); }
+        }
+
+
+        public ObservableCollection<UserTaskViewModel> Tasks { get; set; } = [];
 
         private YourTimeStore appStore;
 
         public RelayCommand AddCommand => new RelayCommand(execute => AddTask(),canExecute => !(TaskDescription == null || TaskDescription == string.Empty));
-        public RelayCommand CreateSeshCommand => new RelayCommand(execute => CreateSesh());
+        public RelayCommand DeleteCommand => new RelayCommand(execute => DeleteTask(), canExecute => SelectedItem != null);
+
+        private void DeleteTask()
+        {
+            UserTaskViewModel toRemove = SelectedItem;
+            Tasks.Remove(toRemove);
+            appStore.DeleteTask(toRemove.Task);
+            
+        }
+
+        public RelayCommand CreateSeshCommand => new RelayCommand(execute => CreateSesh((CreateTask)execute));
         public CreateTaskViewModel(YourTimeStore appStore)
         {
             TaskSessionList.Tasks.ForEach(t => Tasks.Add(new UserTaskViewModel(t)));
@@ -71,7 +79,7 @@ namespace YourTimeApp.ViewModels
             appStore.TaskCreated += OnTaskCreation;
         }
 
-        private void CreateSesh()
+        private void CreateSesh(CreateTask window)
         {
             SessionStart sessionStart = new SessionStart()
             {
@@ -79,23 +87,26 @@ namespace YourTimeApp.ViewModels
             };
 
             sessionStart.Show();
+            Dispose();
+            window.Close();
         }
         private void AddTask()
         {
             UserTask newTask = new UserTask(TaskDescription)
             {
-                AllocatedTime = new TimeSpan(Hours, Minutes, Seconds)
+                AllocatedTime = new TimeSpan(Hours, Minutes, 0)
             };
 
             appStore.CreateTask(newTask);
 
-            Hours = 0; Minutes = 0; Seconds = 0; TaskDescription = string.Empty;
+            TaskDescription = string.Empty;
         }
 
         private void OnTaskCreation(UserTask task)
         {
             Tasks.Add(new UserTaskViewModel(task));
         }
+
 
         public override void Dispose()
         {

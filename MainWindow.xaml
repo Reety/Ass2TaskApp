@@ -5,21 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:YourTimeApp"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vms="clr-namespace:YourTimeApp.ViewModels"
     Title="MainWindow"
     Width="800"
     Height="450"
-    mc:Ignorable="d">
-    <Grid>
-        <StackPanel Orientation="Vertical">
-            <Label x:Name="MainLabel">What is your name?</Label>
-            <Button
-                x:Name="MainButton"
-                Width="100"
-                HorizontalAlignment="Left"
-                Cursor="Hand">
-                Click to start timer
-            </Button>
-        </StackPanel>
-
-    </Grid>
-</Window>
+    mc:Ignorable="d" />

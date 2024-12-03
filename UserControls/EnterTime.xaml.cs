@@ -22,32 +22,31 @@ namespace YourTimeApp.UserControls
     /// </summary>
     public partial class EnterTime : UserControl, INotifyPropertyChanged
     {
-        private string hours;
-
-        public string Hours
-        {
-            get { return hours; }
-            set { hours = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public float HoursFloat
-        {
-            get { return float.Parse(hours); }
-            set { if (float.TryParse(value.ToString(), out float result)) HoursFloat = result;
-                else throw new Exception();
-                OnPropertyChanged();
-            }
-        }
-
         public EnterTime()
         {
+ 
             InitializeComponent();
+            LoadHours();
+            LoadMinutes();
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private void LoadHours()
+        {
+            for (int i = 0; i < 24; i++)
+            {
+                Hrs.Items.Add(i);
+            }
+        }
+        private void LoadMinutes()
+        {
+            for (int i = 0; i < 60; i++)
+            {
+                Mins.Items.Add(i);
+            }
+        }
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

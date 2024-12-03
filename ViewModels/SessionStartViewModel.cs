@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
 using System.Runtime;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +17,31 @@ namespace YourTimeApp.ViewModels
     public class SessionStartViewModel : ViewModelBase
     {
 
+        #region Timer Properties
+        private int hours;
+        public int Hours
+        {
+            get => hours;
+            set
+            {
+                hours = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int minutes;
+        public int Minutes
+        {
+            get => minutes;
+            set
+            {
+                minutes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         private TimeBlockViewModel? currentTimeBlock;
         public TimeBlockViewModel? CurrentTimeBlock { 
             get => currentTimeBlock;
@@ -27,7 +53,7 @@ namespace YourTimeApp.ViewModels
         }
 
         private YourTimeStore appStore;
-        private EndSessionViewModel endSessionView;
+
 
         public ObservableCollection<UserTaskViewModel> AllTasks { get; set; } = [];
         public ObservableCollection<UserTaskViewModel> SelectedItems { get; set; } = [];
@@ -40,24 +66,32 @@ namespace YourTimeApp.ViewModels
                 if (!AllTasks.Select(t => t.Task).Contains(x)) AllTasks.Add(new UserTaskViewModel(x));
             });
             appStore.TaskCreated += OnTaskCreated;
-            endSessionView = new EndSessionViewModel(appStore);
+            appStore.TaskDeleted += OnTaskDeleted;
                   
         }
 
 
 
-		public RelayCommand StartTimeCommand => new RelayCommand(execute => { }, canExecute => { return true; });
-        public RelayCommand StartSeshCommand => new RelayCommand(execute => StartSession(), canExecute => (SelectedItems.Count != 0 && CurrentTimeBlock == null));
+        public RelayCommand StartSeshCommand => new RelayCommand(execute => StartSession(), canExecute => (SelectedItems.Count != 0 && !(Hours == 0 && Minutes == 0)));
+        public RelayCommand GoBackTasks => new RelayCommand(execute => BackToTasks((Window)execute));
 
-        public RelayCommand StartTimerCommand => new RelayCommand(execute => StartTimer(), canExecute => ((CurrentTimeBlock != null) && CurrentTimeBlock.CurrentTask != null && !CurrentTimeBlock.Timer.TimerStarted));
-        public RelayCommand PauseTimerCommand => new RelayCommand(execute => PauseTimer(), canExecute => ((CurrentTimeBlock != null) && !CurrentTimeBlock.Timer.TimerEnded));
+        private void BackToTasks(Window currentWindow)
+        {
+            CreateTask taskView = new CreateTask()
+            {
+                DataContext = new CreateTaskViewModel(appStore),
+            };
+            taskView.Show();
 
-        public RelayCommand StopTimerCommand => new RelayCommand(execute => StopTimer(), canExecute => ((CurrentTimeBlock != null)));
+            Dispose();
+            currentWindow.Close();
+      
+            
+        }
 
-        public RelayCommand ChangeCurrentTaskCommand => new RelayCommand(execute => ChangeCurrentTask((TaskTimeViewModel)execute),canExecute => ((CurrentTimeBlock != null) && CurrentTimeBlock.CurrentTask != canExecute));
         private void StartSession()
         {
-            TimeBlock tbModel = new TimeBlock();
+            TimeBlock tbModel = new TimeBlock(new TimeSpan(Hours,Minutes,0));
             appStore.CreateTimeBlock(tbModel);
 
             CurrentTimeBlock = new TimeBlockViewModel(tbModel);
@@ -66,62 +100,45 @@ namespace YourTimeApp.ViewModels
                 CurrentTimeBlock.AddTask(task);
             }
 
-            CurrentSession session = new CurrentSession(this);
-            Window window = new Window
+            CurrentSessionViewModel currentSeshVM = new(appStore);
+            appStore.StartTimeBlock(CurrentTimeBlock);
+
+            new Window()
             {
-                Title = "Current Session",
-                Content = session,
-                SizeToContent = SizeToContent.WidthAndHeight,
-                ResizeMode = ResizeMode.NoResize
-            };
-            window.ShowDialog();
+                DataContext = currentSeshVM,
+                Content = new CurrentSession()
+            }.ShowDialog();
+
+            
         }
 
-        private void ChangeCurrentTask(TaskTimeViewModel currentTask)
-        {
-            CurrentTimeBlock.CurrentTask = currentTask;
-        }
-
-        private void StartTimer()
-		{
-            CurrentTimeBlock.Timer.Start();
-		}
-
-        private void PauseTimer() { 
-
-            if (CurrentTimeBlock.Timer.Paused) CurrentTimeBlock.Timer.Resume();
-            else CurrentTimeBlock.Timer.Pause();
-        }
-
-        private void StopTimer() { 
-
-            CurrentTimeBlock.Timer.Stop();
-
-            appStore.EndTimeBlock(currentTimeBlock);
-
-            Window window = new Window
-            {
-                Title = "Current Session",
-                Content = new EndSession()
-                {
-                    DataContext = endSessionView
-                },
-                SizeToContent = SizeToContent.WidthAndHeight,
-                ResizeMode = ResizeMode.NoResize
-            };
-            window.ShowDialog();
-
-
-        }
-
+ 
         private void OnTaskCreated(UserTask task)
         {
             AllTasks.Add(new UserTaskViewModel(task));
         }
 
+        private void OnTaskDeleted(UserTask task)
+        {
+            UserTaskViewModel toRemove = null;
+
+            foreach (var item in AllTasks)
+            {
+                if (item.Task == task)
+                {
+                    toRemove = item;
+                }
+            }
+
+            if (toRemove == null) return;
+
+            AllTasks.Remove(toRemove);
+        }
+
         public override void Dispose()
         {
             appStore.TaskCreated -= OnTaskCreated;
+            appStore.TaskDeleted -= OnTaskDeleted;
             base.Dispose();
         }
     }

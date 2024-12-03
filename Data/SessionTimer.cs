@@ -63,7 +63,7 @@ namespace YourTimeApp.Data
 
         private void everySecond(Object source, EventArgs e) {
             TimeRemaining = TimeAllocated - stopWatch.Elapsed;
-            if (stopWatch.Elapsed == TimeAllocated) this.Stop();
+            if (stopWatch.Elapsed >= TimeAllocated) this.Stop();
         }
     }
 }

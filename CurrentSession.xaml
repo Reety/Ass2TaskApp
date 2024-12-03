@@ -51,7 +51,7 @@
             ItemsSource="{Binding CurrentTimeBlock.TaskAndTimes}">
             <DataGrid.Columns>
                 <DataGridTextColumn
-                    Width="3*"
+                    Width="2*"
                     Binding="{Binding Task}"
                     Header="Task"
                     SortMemberPath="IsCurrentTask" />
@@ -59,7 +59,7 @@
                     Width="*"
                     Binding="{Binding TimeSpent}"
                     Header="TimeSpent" />
-                <DataGridTemplateColumn Width="0.2*">
+                <DataGridTemplateColumn Width="0.5*" Header="Current Task">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <RadioButton
