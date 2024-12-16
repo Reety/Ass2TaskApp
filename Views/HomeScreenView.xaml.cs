@@ -18,9 +18,9 @@ namespace YourTimeApp.Views
     /// <summary>
     /// Interaction logic for AllTasksCreateView.xaml
     /// </summary>
-    public partial class AllTasksCreateView : UserControl
+    public partial class HomeScreenView : UserControl
     {
-        public AllTasksCreateView()
+        public HomeScreenView()
         {
             InitializeComponent();
         }

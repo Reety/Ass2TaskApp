@@ -10,6 +10,7 @@ using YourTimeApp.DB;
 using YourTimeApp.ViewModels;
 using YourTimeApp.Data;
 using LiveChartsCore;
+using YourTimeApp.Stores;
 
 namespace YourTimeApp
 {   
@@ -21,9 +22,12 @@ namespace YourTimeApp
         public static IConfiguration Config { get; private set; }
 
         private CreateTaskViewModel createTaskVM;
+        private readonly NavigationStore _navigationStore;
 
         public App()
         {
+            _navigationStore = new NavigationStore();
+
             TaskSessionList.Tasks.Add(new Data.UserTask("working on dot net assignment")
             {
                 AllocatedTime = new TimeSpan(0, 15, 0)
@@ -55,12 +59,21 @@ namespace YourTimeApp
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            CreateTask createTaskWindow = new CreateTask()
-            {
-                DataContext = createTaskVM
+            _navigationStore.CurrentViewModel = new HomeScreenViewModel(_navigationStore);
+
+            MainWindow = new MainWindow() 
+            { 
+                DataContext = new MainViewModel(_navigationStore) 
             };
 
-            createTaskWindow.Show();
+            MainWindow.Show();
+
+            //CreateTask createTaskWindow = new CreateTask()
+            //{
+            //    DataContext = createTaskVM
+            //};
+
+            //createTaskWindow.Show();
         }
     }
 }
